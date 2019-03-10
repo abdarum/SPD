@@ -87,3 +87,4 @@ print(all_combination_count(permutation_table, data_table))
 print("\n\n\n\n")
 
 print(return_the_best_combination(permutation_table))
+#sprawdzenie
