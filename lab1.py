@@ -87,7 +87,7 @@ def full_cycle_of_finding_the_best_combination(table):
     print("Time: "+str(time)+" Combination: "+str(combination))
     return(return_the_best_combination(return_table))
 
-def johnson(table_import):
+def johnson_dla_2(table_import): #johnsons algorithm for 2 machines
     table = list(table_import)
     lista1 = []
     lista2 = []
@@ -109,6 +109,17 @@ def johnson(table_import):
             del table[min2]
     return lista1+lista2
 
+def johnson_dla_3(table_import2): #johnsons algoritm for 3 machines
+    table = list(table_import2)
+    lista3 = []
+    for i in range(0, len(table)):
+        suma_1_2 = table[i][0] + table[i][1]
+        suma_2_3 = table[i][1] + table[i][2]
+        lista3.append([suma_1_2, suma_2_3])
+        print(suma_1_2)
+        print(suma_2_3)
+    return johnson_dla_2(lista3)
+
 
 
 #       main
@@ -117,8 +128,8 @@ data_table = list()
 
 
 #Combination of data to test, second is in PDF
-#data_table = [[ 4, 5, 3],[ 4, 1, 2 ],[ 10, 4, 5 ],[ 6, 10, 1 ],[ 2, 3, 2 ]]
-data_table = [[ 4, 5 ],[ 4, 1 ],[ 10, 4 ],[ 6, 10 ],[ 2, 3 ]]
+data_table = [[ 4, 5, 3],[ 4, 1, 2 ],[ 10, 4, 5 ],[ 6, 10, 1 ],[ 2, 3, 2 ]]
+#data_table = [[ 4, 5 ],[ 4, 1 ],[ 10, 4 ],[ 6, 10 ],[ 2, 3 ]]
 #Print table with data
 print(data_table)
 
@@ -140,8 +151,10 @@ print("\n\n\n\n")
 print(return_the_best_combination(permutation_table))
 
 print("\n\n\n Johnson\n\n\n")
-print(johnson(data_table))
-print(count_time(johnson(data_table)))
+#print(johnson_dla_2(data_table))
+#print(count_time(johnson_dla_2(data_table)))
+print(johnson_dla_3(data_table))
+print(count_time(johnson_dla_3(data_table)))
 
 print("\n\n\n")
 
