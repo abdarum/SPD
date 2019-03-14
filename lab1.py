@@ -80,6 +80,11 @@ def full_cycle_of_finding_the_best_combination(table):
     return_table = list()
     return_table = auto_permutation(table)
     return_table = all_combination_count(return_table, table)
+    combination = return_the_best_combination(return_table)
+    time = combination[0]
+    combination = combination[1]
+    print(combination_to_data_table(combination, table))
+    print("Time: "+str(time)+" Combination: "+str(combination))
     return(return_the_best_combination(return_table))
 
 def johnson(table_import):
@@ -136,10 +141,11 @@ print(return_the_best_combination(permutation_table))
 
 print("\n\n\n Johnson\n\n\n")
 print(johnson(data_table))
+print(count_time(johnson(data_table)))
 
 print("\n\n\n")
 
 
 print("\ntest of one function\n")
-print(full_cycle_of_finding_the_best_combination(data_table))
+full_cycle_of_finding_the_best_combination(data_table)
 #sprawdzenie
