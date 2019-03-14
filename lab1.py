@@ -94,14 +94,13 @@ def johnson(table_import):
             #print(table)
             if table[i][0] < table[min1][0]:
                 min1 = i
-                print(min1)
             if table[i][1] < table[min2][1]:
                 min2 = i
         if (table[min1][0] < table[min2][1]) | (table[min1][0] == table[min2][1]):
-            lista1.append(min1)
+            lista1.append(table[min1])
             del table[min1]
         else:
-            lista2.insert(0, min2)
+            lista2.insert(0, table[min2])
             del table[min2]
     return lista1+lista2
 
