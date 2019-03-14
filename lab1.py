@@ -65,6 +65,7 @@ def all_combination_count(table, data):
     return(table)
 
 
+
 def return_the_best_combination(table):
     #Function sort table by the time(lowest time is at the [0] element)
     table = sorted(table,key=lambda l:l[0])
@@ -81,7 +82,28 @@ def full_cycle_of_finding_the_best_combination(table):
     return_table = all_combination_count(return_table, table)
     return(return_the_best_combination(return_table))
 
-
+def johnson(table_import):
+    table = list(table_import)
+    lista1 = []
+    lista2 = []
+    while len(table) > 0:
+        min1 = 0
+        min2 = 0
+        for i in range(0, len(table)):
+            #print(i)
+            #print(table)
+            if table[i][0] < table[min1][0]:
+                min1 = i
+                print(min1)
+            if table[i][1] < table[min2][1]:
+                min2 = i
+        if (table[min1][0] < table[min2][1]) | (table[min1][0] == table[min2][1]):
+            lista1.append(min1)
+            del table[min1]
+        else:
+            lista2.insert(0, min2)
+            del table[min2]
+    return lista1+lista2
 
 
 
@@ -89,9 +111,10 @@ def full_cycle_of_finding_the_best_combination(table):
 permutation_table = list()
 data_table = list()
 
+
 #Combination of data to test, second is in PDF
-data_table = [[ 4, 5, 3],[ 4, 1, 2 ],[ 10, 4, 5 ],[ 6, 10, 1 ],[ 2, 3, 2 ]]
-#data_table = [[ 4, 5 ],[ 4, 1 ],[ 10, 4 ],[ 6, 10 ],[ 2, 3 ]]
+#data_table = [[ 4, 5, 3],[ 4, 1, 2 ],[ 10, 4, 5 ],[ 6, 10, 1 ],[ 2, 3, 2 ]]
+data_table = [[ 4, 5 ],[ 4, 1 ],[ 10, 4 ],[ 6, 10 ],[ 2, 3 ]]
 #Print table with data
 print(data_table)
 
@@ -100,8 +123,6 @@ print(count_time(data_table))
 
 #Test
 #print(combination_to_data_table((4,1,2,3,0), data_table))
-
-
 
 permutation_table  = auto_permutation(data_table)
 print(permutation_table)
@@ -113,6 +134,11 @@ print(all_combination_count(permutation_table, data_table))
 print("\n\n\n\n")
 
 print(return_the_best_combination(permutation_table))
+
+print("\n\n\n Johnson\n\n\n")
+print(johnson(data_table))
+
+print("\n\n\n")
 
 
 print("\ntest of one function\n")
