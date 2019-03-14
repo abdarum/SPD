@@ -87,8 +87,9 @@ def full_cycle_of_finding_the_best_combination(table):
     print("Time: "+str(time)+" Combination: "+str(combination))
     return(return_the_best_combination(return_table))
 
-def johnson_dla_2(table_import): #johnsons algorithm for 2 machines
+def johnson_dla_2(table_import, table_3_import=list()): #johnsons algorithm for 2 machines
     table = list(table_import)
+    table_3 = list(table_3_import)
     lista1 = []
     lista2 = []
     while len(table) > 0:
@@ -102,23 +103,30 @@ def johnson_dla_2(table_import): #johnsons algorithm for 2 machines
             if table[i][1] < table[min2][1]:
                 min2 = i
         if (table[min1][0] < table[min2][1]) | (table[min1][0] == table[min2][1]):
-            lista1.append(table[min1])
+            if len(table_3):
+                lista1.append(table_3[min1])
+                del table_3[min1]
+            else:
+                lista1.append(table[min1])
             del table[min1]
         else:
-            lista2.insert(0, table[min2])
+            if len(table_3):
+                lista2.insert(0, table_3[min2])
+                del table_3[min2]
+            else:
+                lista2.insert(0, table[min2])
             del table[min2]
     return lista1+lista2
 
-def johnson_dla_3(table_import2): #johnsons algoritm for 3 machines
-    table = list(table_import2)
+def johnson_dla_3(table): #johnsons algoritm for 3 machines
     lista3 = []
     for i in range(0, len(table)):
         suma_1_2 = table[i][0] + table[i][1]
         suma_2_3 = table[i][1] + table[i][2]
         lista3.append([suma_1_2, suma_2_3])
-        print(suma_1_2)
-        print(suma_2_3)
-    return johnson_dla_2(lista3)
+        #print(suma_1_2)
+        #print(suma_2_3)
+    return johnson_dla_2(lista3, table)
 
 
 
