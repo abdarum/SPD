@@ -128,6 +128,59 @@ def johnson_dla_3(table): #johnsons algoritm for 3 machines
         #print(suma_2_3)
     return johnson_dla_2(lista3, table)
 
+def sortSecond(val): 
+        return val[1]  
+
+def comination_by_sum_of_time_in_machine(table):
+    jobs = len(table)
+    if jobs:
+        machines = len(table[0])
+        index_sorted = list()
+        index_and_count_time = list()
+        for j in range(0, jobs):
+            sum_var = 0
+            index_and_count_time.append(list({j}))
+            for m in range(0, machines):
+                sum_var += table[j][m]
+            index_and_count_time[j].append(sum_var)
+        index_and_count_time.sort(key = sortSecond, reverse=True)  
+        for i in index_and_count_time:
+            index_sorted.append(i[0])
+
+        print(index_and_count_time)
+        return index_sorted
+
+def combination_of_moveable_number(static_numbers, moveable_number):
+    vector_of_combinations = list()
+    for i in range(0,len(static_numbers)+1):
+        tmp = list(static_numbers)
+        tmp.insert(i, moveable_number)
+        vector_of_combinations.append(tmp)
+    return vector_of_combinations
+
+def neh_function(table):
+    sequence_original = comination_by_sum_of_time_in_machine(table)
+    sequence = list({sequence_original[0]})
+
+    for i in range(1, len(sequence_original)):
+        tmp_sequence = list()
+        tmp_sequence = combination_of_moveable_number(sequence, sequence_original[i])
+        tmp_time = -1 #for the lowest time and it can not be negative
+        tmp_time_idx = 0
+        tmp = 0
+        for k in range(0, len(sequence)+1):
+            tmp = count_time(combination_to_data_table(tmp_sequence[k], table))
+            if((tmp < tmp_time) or (tmp_time < 0)):
+                tmp_time = tmp
+                tmp_time_idx = k
+            print("\n k: "+str(k)+" tmp "+str(tmp)+" tmp_time "+str(tmp_time)+"\n")
+        print(tmp_sequence)
+        print("\n")
+        sequence = tmp_sequence[tmp_time_idx]
+        print(sequence)
+        print("\n____________________________\n")
+    return sequence
+
 
 
 #       main
@@ -136,8 +189,11 @@ data_table = list()
 
 
 #Combination of data to test, second is in PDF
-data_table = [[ 4, 5, 3],[ 4, 1, 2 ],[ 10, 4, 5 ],[ 6, 10, 1 ],[ 2, 3, 2 ]]
+#data_table = [[ 4, 5, 3],[ 4, 1, 2 ],[ 10, 4, 5 ],[ 6, 10, 1 ],[ 2, 3, 2 ]]
 #data_table = [[ 4, 5 ],[ 4, 1 ],[ 10, 4 ],[ 6, 10 ],[ 2, 3 ]]
+data_table = [ [ 4, 1, 4],[ 4, 3, 3 ],[ 1, 2, 3],[ 5, 1, 3] ]
+
+
 #Print table with data
 print(data_table)
 
@@ -170,3 +226,10 @@ print("\n\n\n")
 print("\ntest of one function\n")
 full_cycle_of_finding_the_best_combination(data_table)
 #sprawdzenie
+
+print(combination_of_moveable_number(list({3,2,5}),1))
+
+
+print("\n\n\n")
+
+print(neh_function(data_table))
