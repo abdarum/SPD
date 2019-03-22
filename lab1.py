@@ -144,6 +144,7 @@ def comination_by_sum_of_time_in_machine(table):
                 sum_var += table[j][m]
             index_and_count_time[j].append(sum_var)
         index_and_count_time.sort(key = sortSecond, reverse=True)  
+        #sortowanie jak u dr makuchowskiego
         for i in index_and_count_time:
             index_sorted.append(i[0])
 
@@ -182,6 +183,16 @@ def neh_function(table):
     return sequence
 
 
+'''
+porównanie jonsona dla 3 maszyn o  różnej liczbie zadan 20 do 200 z neh
+
+spd - qnech - makuchowski akceleracja
+tablica zakończeń już jest ok
+poszukać w linkach(do jego pdf) akceleracjii
+porównać wersje przed akceleracji i po i wykres
+
+4 modyfikacja najłatwiejsza
+'''
 
 #       main
 permutation_table = list()
