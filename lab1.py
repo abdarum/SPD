@@ -181,6 +181,9 @@ def neh_function(table):
         print(sequence)
         print("\n____________________________\n")
     return sequence
+	
+def load_data_table_from_file(file_patch):
+	print("ocs")
 
 
 '''
@@ -244,3 +247,6 @@ print(combination_of_moveable_number(list({3,2,5}),1))
 print("\n\n\n")
 
 print(neh_function(data_table))
+
+load_data_table_from_file("dane_wejsciowe.txt")
+raw_input('')
