@@ -183,7 +183,22 @@ def neh_function(table):
     return sequence
 	
 def load_data_table_from_file(file_patch):
-	print("ocs")
+    f = open(file_patch, 'r')
+    name_of_set = f.readline()
+    name_of_set = name_of_set.rstrip("\n\r")
+    number_of_jobs =  f.readline()
+    number_of_jobs = int(number_of_jobs.rstrip("\n\r"))
+
+    if number_of_jobs > 0:
+        table = list()
+        for i in range(0,number_of_jobs):
+            line = f.readline()
+            if line == "":
+                break
+            line = line.rstrip("\n\r")
+            table.append(line.split(" "))
+
+    return table
 
 
 '''
@@ -248,5 +263,4 @@ print("\n\n\n")
 
 print(neh_function(data_table))
 
-load_data_table_from_file("dane_wejsciowe.txt")
-raw_input('')
+print(load_data_table_from_file("dane_tmp"))
