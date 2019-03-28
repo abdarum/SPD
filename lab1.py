@@ -185,6 +185,12 @@ def neh_function(table):
 def load_data_table_from_file(file_patch):
     f = open(file_patch, 'r')
     name_of_set = f.readline()
+    while True:
+        if name_of_set != "\n":
+            break
+        name_of_set = f.readline()
+
+
     name_of_set = name_of_set.rstrip("\n\r")
     number_of_jobs =  f.readline()
     number_of_jobs = int(number_of_jobs.rstrip("\n\r"))
@@ -197,6 +203,7 @@ def load_data_table_from_file(file_patch):
                 break
             line = line.rstrip("\n\r")
             table.append(line.split(" "))
+    f.close()
 
     return table
 
