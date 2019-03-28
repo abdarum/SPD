@@ -3,6 +3,7 @@
 #import built-in modules
 
 import itertools
+import time
 
 
 def permutation_and_c_time(permutation_list):
@@ -280,16 +281,20 @@ jonson_table_time = 0
 neh_table = list()
 neh_table_time = 0
 data_table = load_data_table_from_file("dane_tmp")
+start_time = time.time()
 jonson_table = johnson_dla_3(data_table)
+elapsed_time = time.time() - start_time
 jonson_table_time = count_time(jonson_table)
 print("Jonson combination: ")
 print(jonson_table)
-print("\nJonson optimum time: "+str(jonson_table_time)+"\n")
+print("\nJonson optimum time: "+str(jonson_table_time)+"\t computing time:"+str(elapsed_time)+"\n")
 
+start_time = time.time()
 neh_table = combination_to_data_table(neh_function(data_table), data_table)
+elapsed_time = time.time() - start_time
 neh_table_time = count_time(neh_table)
 print("NEH combination: ")
 print(neh_table)
-print("\nNEH optimum time: "+str(neh_table_time)+"\n")
+print("\nNEH optimum time: "+str(neh_table_time)+"\t computing time:"+str(elapsed_time)+"\n")
 
 
