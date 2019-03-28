@@ -148,7 +148,7 @@ def comination_by_sum_of_time_in_machine(table):
         for i in index_and_count_time:
             index_sorted.append(i[0])
 
-        print(index_and_count_time)
+        #print(index_and_count_time)
         return index_sorted
 
 def combination_of_moveable_number(static_numbers, moveable_number):
@@ -174,12 +174,12 @@ def neh_function(table):
             if((tmp < tmp_time) or (tmp_time < 0)):
                 tmp_time = tmp
                 tmp_time_idx = k
-            print("\n k: "+str(k)+" tmp "+str(tmp)+" tmp_time "+str(tmp_time)+"\n")
-        print(tmp_sequence)
-        print("\n")
+            #print("\n k: "+str(k)+" tmp "+str(tmp)+" tmp_time "+str(tmp_time)+"\n")
+        #print(tmp_sequence)
+        #print("\n")
         sequence = tmp_sequence[tmp_time_idx]
-        print(sequence)
-        print("\n____________________________\n")
+        #print(sequence)
+        #print("\n____________________________\n")
     return sequence
 	
 def load_data_table_from_file(file_patch):
@@ -229,9 +229,9 @@ data_table = list()
 #Combination of data to test, second is in PDF
 #data_table = [[ 4, 5, 3],[ 4, 1, 2 ],[ 10, 4, 5 ],[ 6, 10, 1 ],[ 2, 3, 2 ]]
 #data_table = [[ 4, 5 ],[ 4, 1 ],[ 10, 4 ],[ 6, 10 ],[ 2, 3 ]]
-data_table = [ [ 4, 1, 4],[ 4, 3, 3 ],[ 1, 2, 3],[ 5, 1, 3] ]
+#data_table = [ [ 4, 1, 4],[ 4, 3, 3 ],[ 1, 2, 3],[ 5, 1, 3] ]
 
-
+'''
 #Print table with data
 print(data_table)
 
@@ -273,11 +273,23 @@ print("\n\n\n")
 print(neh_function(data_table))
 
 print(load_data_table_from_file("dane_tmp"))
+'''
 
-
+jonson_table = list()
+jonson_table_time = 0
+neh_table = list()
+neh_table_time = 0
 data_table = load_data_table_from_file("dane_tmp")
-# od tąd normalnie
+jonson_table = johnson_dla_3(data_table)
+jonson_table_time = count_time(jonson_table)
+print("Jonson combination: ")
+print(jonson_table)
+print("\nJonson optimum time: "+str(jonson_table_time)+"\n")
 
-
+neh_table = combination_to_data_table(neh_function(data_table), data_table)
+neh_table_time = count_time(neh_table)
+print("NEH combination: ")
+print(neh_table)
+print("\nNEH optimum time: "+str(neh_table_time)+"\n")
 
 
