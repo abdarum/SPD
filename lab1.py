@@ -202,7 +202,9 @@ def load_data_table_from_file(file_patch):
             if line == "":
                 break
             line = line.rstrip("\n\r")
-            table.append(line.split(" "))
+            line = line.split(" ")
+            line = [int(i) for i in line] 
+            table.append(line)
     f.close()
 
     return table
