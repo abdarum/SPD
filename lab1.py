@@ -4,6 +4,8 @@
 
 import itertools
 import time
+import random
+import math
 
 
 def permutation_and_c_time(permutation_list):
