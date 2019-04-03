@@ -182,7 +182,51 @@ def neh_function(table):
         #print(sequence)
         #print("\n____________________________\n")
     return sequence
-	
+
+
+def simulated_annealing(table, start_sequence, cooling_parameter, 
+		start_temperature, max_iteration_number=-1, 
+                critical_temperature=-1):
+    max_idx = len(start_sequence) - 1
+    current_iteration = 0
+    current_temperature = start_temperature
+
+    current_sequence = list(start_sequence)
+    best_sequence = list(current_sequence)
+    best_sequence_time = count_time(combination_to_data_table(best_sequence, table))
+    while not (((max_iteration_number == -1) and (critical_temperature == -1)) or 
+        ((current_iteration >= max_iteration_number) and (max_iteration_number > 0)) or
+        ((current_temperature <= critical_temperature) and (critical_temperature > 0))):
+
+        count_time_old = count_time(combination_to_data_table(current_sequence, table))
+        #current_iteration = list(best_sequence) #nie wiem czy to jest dobrze i powinno być
+        rand_idx1 = random.randint(0, max_idx)
+        rand_idx2 = rand_idx1
+        while(rand_idx2 == rand_idx1):
+            rand_idx2 = random.randint(0, max_idx)
+        current_sequence[rand_idx1], current_sequence[rand_idx2] = current_sequence[rand_idx2], current_sequence[rand_idx1]
+        count_time_new = count_time(combination_to_data_table(current_sequence, table))
+        probability = 0.0
+        if count_time_new >= count_time_old:
+            probability = math.exp((count_time_old-count_time_new)/current_temperature)
+        else:
+            probability = 1
+            
+        if probability < random.random():
+            current_sequence[rand_idx1], current_sequence[rand_idx2] = current_sequence[rand_idx2], current_sequence[rand_idx1]
+
+        current_temperature = current_temperature*cooling_parameter
+        if count_time_new < best_sequence_time:
+            best_sequence = list(current_sequence)
+            best_sequence_time = count_time(combination_to_data_table(best_sequence, table))
+
+
+        print("idx "+str(current_iteration)+" rand_1 "+str(rand_idx1)+" rand_2 "+str(rand_idx2)+"\n")
+        print("probability "+str(probability)+" old_time "+str(count_time_old)+" new_time "+str(count_time_new)+" temp "+str(current_temperature)+"\n")
+        current_iteration += 1
+    return best_sequence
+
+
 def load_data_table_from_file(file_patch):
     f = open(file_patch, 'r')
     name_of_set = f.readline()
@@ -296,5 +340,10 @@ neh_table_time = count_time(neh_table)
 print("NEH combination: ")
 print(neh_table)
 print("\nNEH optimum time: "+str(neh_table_time)+"\t computing time:"+str(elapsed_time)+"\n")
+
+
+print(simulated_annealing(data_table, neh_function(data_table), 0.95, 500, 50))
+print(count_time(combination_to_data_table(
+    simulated_annealing(data_table, neh_function(data_table), 0.95, 500, 50), data_table)))
 
 
