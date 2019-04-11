@@ -201,7 +201,7 @@ def random_change_sequence(sequence, number_of_change=10, percent_of_change=0):
 
 def simulated_annealing(table, start_sequence, cooling_parameter, 
 		start_temperature, max_iteration_number=-1, 
-                critical_temperature=-1):
+                critical_temperature=-1, insert_bool=False):
     max_idx = len(start_sequence) - 1
     current_iteration = 0
     current_temperature = start_temperature
@@ -217,9 +217,20 @@ def simulated_annealing(table, start_sequence, cooling_parameter,
         #current_iteration = list(best_sequence) #nie wiem czy to jest dobrze i powinno być
         rand_idx1 = random.randint(0, max_idx)
         rand_idx2 = rand_idx1
-        while(rand_idx2 == rand_idx1):
-            rand_idx2 = random.randint(0, max_idx)
-        current_sequence[rand_idx1], current_sequence[rand_idx2] = current_sequence[rand_idx2], current_sequence[rand_idx1]
+        if insert_bool:
+            #insert
+            while(rand_idx2 == rand_idx1 or rand_idx2 == max_idx):
+                rand_idx2 = random.randint(0, max_idx-1)
+            removed_element = current_sequence.pop(rand_idx1)
+            current_sequence.insert(rand_idx2, removed_element)
+            #print("insert, "+str(len(current_sequence)))
+        else:
+            #swap
+            while(rand_idx2 == rand_idx1):
+                rand_idx2 = random.randint(0, max_idx)
+            current_sequence[rand_idx1], current_sequence[rand_idx2] = \
+                    current_sequence[rand_idx2], current_sequence[rand_idx1]
+            #print("swap, "+str(len(current_sequence)))
         count_time_new = count_time(combination_to_data_table(current_sequence, table))
         probability = 0.0
         if count_time_new >= count_time_old:
@@ -365,7 +376,9 @@ changed_sequence = random_change_sequence(sequence=neh_sequence, percent_of_chan
 neh_seq_time = count_time(combination_to_data_table(neh_sequence, data_table))
 changed_seq_time = count_time(combination_to_data_table(changed_sequence, data_table))
 
-after_annealing_seq = simulated_annealing(data_table, neh_function(data_table), 0.95, 500, 50)
+after_annealing_seq = simulated_annealing(data_table, neh_function(data_table), 
+        cooling_parameter=0.95, start_temperature=500, max_iteration_number=50, 
+        critical_temperature=-1, insert_bool=True)
 after_annealing_seq_time = count_time(combination_to_data_table(after_annealing_seq, data_table))
 
 print("neh time "+str(neh_seq_time)+" changed sequence time "+str(changed_seq_time)+" after annealing "+str(after_annealing_seq_time))
