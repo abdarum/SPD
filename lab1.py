@@ -186,6 +186,19 @@ def neh_function(table):
     return sequence
 
 
+def random_change_sequence(sequence, number_of_change=10, percent_of_change=0):
+    max_idx = len(sequence) - 1
+    current_sequence = list(sequence)
+    if percent_of_change > 0:
+        number_of_change = int(percent_of_change*len(sequence))
+    for i in range(0,number_of_change):
+        rand_idx1 = random.randint(0, max_idx)
+        rand_idx2 = rand_idx1
+        while(rand_idx2 == rand_idx1):
+            rand_idx2 = random.randint(0, max_idx)
+        current_sequence[rand_idx1], current_sequence[rand_idx2] = current_sequence[rand_idx2], current_sequence[rand_idx1]
+    return current_sequence
+
 def simulated_annealing(table, start_sequence, cooling_parameter, 
 		start_temperature, max_iteration_number=-1, 
                 critical_temperature=-1):
@@ -322,11 +335,13 @@ print(neh_function(data_table))
 print(load_data_table_from_file("dane_tmp"))
 '''
 
+data_table = load_data_table_from_file("danedla200")
+
+'''
 jonson_table = list()
 jonson_table_time = 0
 neh_table = list()
 neh_table_time = 0
-data_table = load_data_table_from_file("danedla200")
 start_time = time.time()
 jonson_table = johnson_dla_3(data_table)
 elapsed_time = time.time() - start_time
@@ -334,18 +349,31 @@ jonson_table_time = count_time(jonson_table)
 print("Jonson combination: ")
 print(jonson_table)
 print("\nJonson optimum time: "+str(jonson_table_time)+"\t computing time:"+str(elapsed_time)+"\n")
+'''
 
 start_time = time.time()
-neh_table = combination_to_data_table(neh_function(data_table), data_table)
+neh_table = combination_to_data_table(list({0,1,2,3,4,5,6,7}), data_table)
+#neh_table = combination_to_data_table(neh_function(data_table), data_table)
 elapsed_time = time.time() - start_time
 neh_table_time = count_time(neh_table)
 print("NEH combination: ")
 print(neh_table)
 print("\nNEH optimum time: "+str(neh_table_time)+"\t computing time:"+str(elapsed_time)+"\n")
 
+neh_sequence = neh_function(data_table)
+changed_sequence = random_change_sequence(sequence=neh_sequence, percent_of_change=0.05)
+neh_seq_time = count_time(combination_to_data_table(neh_sequence, data_table))
+changed_seq_time = count_time(combination_to_data_table(changed_sequence, data_table))
 
-print(simulated_annealing(data_table, neh_function(data_table), 0.95, 500, 50))
-print(count_time(combination_to_data_table(
-    simulated_annealing(data_table, neh_function(data_table), 0.95, 500, 50), data_table)))
+after_annealing_seq = simulated_annealing(data_table, neh_function(data_table), 0.95, 500, 50)
+after_annealing_seq_time = count_time(combination_to_data_table(after_annealing_seq, data_table))
+
+print("neh time "+str(neh_seq_time)+" changed sequence time "+str(changed_seq_time)+" after annealing "+str(after_annealing_seq_time))
+
+
+#print(simulated_annealing(data_table, neh_function(data_table), 0.95, 500, 50))
+#print(count_time(combination_to_data_table(
+#    simulated_annealing(data_table, neh_function(data_table), 0.95, 500, 50), data_table)))
+
 
 
