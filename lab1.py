@@ -376,12 +376,17 @@ changed_sequence = random_change_sequence(sequence=neh_sequence, percent_of_chan
 neh_seq_time = count_time(combination_to_data_table(neh_sequence, data_table))
 changed_seq_time = count_time(combination_to_data_table(changed_sequence, data_table))
 
+start_time = 0
+elapsed_time = 0
+
+start_time = time.time()
 after_annealing_seq = simulated_annealing(data_table, changed_sequence, 
         cooling_parameter=0.95, start_temperature=500, max_iteration_number=10, 
         critical_temperature=-1, insert_bool=True)
 after_annealing_seq_time = count_time(combination_to_data_table(after_annealing_seq, data_table))
+elapsed_time = time.time() - start_time
 
-print("neh time "+str(neh_seq_time)+" changed sequence time "+str(changed_seq_time)+" after annealing "+str(after_annealing_seq_time))
+print("neh time "+str(neh_seq_time)+" changed sequence time "+str(changed_seq_time)+" after annealing "+str(after_annealing_seq_time)+"\t computing time:"+str(elapsed_time)+"\n")
 
 
 #print(simulated_annealing(data_table, neh_function(data_table), 0.95, 500, 50))
