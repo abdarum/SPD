@@ -346,7 +346,7 @@ print(neh_function(data_table))
 print(load_data_table_from_file("dane_tmp"))
 '''
 
-data_table = load_data_table_from_file("danedla200")
+data_table = load_data_table_from_file("dane2")
 
 '''
 jonson_table = list()
