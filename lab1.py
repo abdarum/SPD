@@ -201,7 +201,7 @@ def random_change_sequence(sequence, number_of_change=10, percent_of_change=0):
 
 def simulated_annealing(table, start_sequence, cooling_parameter, 
 		start_temperature, max_iteration_number=-1, 
-                critical_temperature=-1, insert_bool=False):
+                critical_temperature=0.1, insert_bool=False):
     max_idx = len(start_sequence) - 1
     current_iteration = 0
     current_temperature = start_temperature
@@ -372,7 +372,7 @@ print(neh_table)
 print("\nNEH optimum time: "+str(neh_table_time)+"\t computing time:"+str(elapsed_time)+"\n")
 
 neh_sequence = neh_function(data_table)
-changed_sequence = random_change_sequence(sequence=neh_sequence, percent_of_change=0.3)
+changed_sequence = random_change_sequence(sequence=neh_sequence, percent_of_change=0.1)
 neh_seq_time = count_time(combination_to_data_table(neh_sequence, data_table))
 changed_seq_time = count_time(combination_to_data_table(changed_sequence, data_table))
 
@@ -381,10 +381,11 @@ elapsed_time = 0
 
 start_time = time.time()
 after_annealing_seq = simulated_annealing(data_table, changed_sequence, 
-        cooling_parameter=0.95, start_temperature=500, max_iteration_number=10, 
-        critical_temperature=-1, insert_bool=True)
-after_annealing_seq_time = count_time(combination_to_data_table(after_annealing_seq, data_table))
+        cooling_parameter=0.99, start_temperature=1000, max_iteration_number=1000, 
+        critical_temperature=0.1, insert_bool=True)
 elapsed_time = time.time() - start_time
+after_annealing_seq_time = count_time(combination_to_data_table(after_annealing_seq, data_table))
+
 
 print("neh time "+str(neh_seq_time)+" changed sequence time "+str(changed_seq_time)+" after annealing "+str(after_annealing_seq_time)+"\t computing time:"+str(elapsed_time)+"\n")
 
