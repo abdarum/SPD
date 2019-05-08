@@ -238,7 +238,7 @@ def simulated_annealing(table, start_sequence, cooling_parameter,
         else:
             probability = 1
             
-        if probability < random.random():
+        if probability >= random.random():
             current_sequence[rand_idx1], current_sequence[rand_idx2] = current_sequence[rand_idx2], current_sequence[rand_idx1]
 
         current_temperature = current_temperature*cooling_parameter

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import task
+import copy
 
 
 class Schrage:
@@ -8,20 +9,91 @@ class Schrage:
         self.c_max = 0
         self.t = 0 #time
         self.new_task = task.Task()
-        self.current_task = task.Task()
         self.l_not_ready_tasks = list()
         self.l_ready_tasks = list()
         self.sequence = list()
         self.n = 0
 
     def schrage_s(self): #standard shrage
-        pass
+        self.sort()
+        self.t = self.sequence[0].r
+        self.c_max = 0
+        i = 0
+        l_ready_tasks = list()
+        l_not_ready_tasks = copy.deepcopy(self.sequence)
+
+        while(len(l_not_ready_tasks) or len(l_ready_tasks)):
+            while(len(l_not_ready_tasks) and \
+                    l_not_ready_tasks[0].r <= self.t):
+                tmp_task = l_not_ready_tasks[0]
+                l_ready_tasks.append(tmp_task)
+                del l_not_ready_tasks[0]
+            if len(l_ready_tasks) == 0:
+                self.t = l_not_ready_tasks[0].r
+            else:
+                tmp_max_q = 0
+                it = 0
+                for k in range(0, len(l_ready_tasks)):
+                    if (l_ready_tasks[k].q > tmp_max_q):
+                        tmp_max_q = l_ready_tasks[k].q
+                        it = k
+
+                tmp_task = l_ready_tasks[it]
+                self.sequence[i] = tmp_task
+                del l_ready_tasks[it]
+                self.t += self.sequence[i].p
+
+                self.c_max = max(self.c_max, self.t + self.sequence[i].q);
+
+                i += 1
+
+        self.show_sequence()
+                
+
+
+
 
     def schrage_ptmn(self): #shrage z przerwaniami
-        pass
+        self.sort()
+        self.c_max = 0
+        l_ready_tasks = list()
+        l_not_ready_tasks = copy.deepcopy(self.sequence)
+        self.t = 0 #time
+        new_task = task.Task()
+        current_task = task.Task()
+
+        while(len(l_not_ready_tasks) or len(l_ready_tasks)):
+            while(len(l_not_ready_tasks) and \
+                    l_not_ready_tasks[0].r <= self.t):
+                current_task = l_not_ready_tasks[0]
+                l_ready_tasks.append(current_task)
+                del l_not_ready_tasks[0]
+                if (current_task.q > new_task.q):
+                    new_task.p  = self.t - current_task.r
+                    self.t = current_task.r
+                    if new_task.p > 0:
+                        l_ready_tasks.append(current_task)
+
+            if len(l_ready_tasks) == 0:
+                self.t = l_not_ready_tasks[0].r
+            else:
+                tmp_max_q = 0
+                it = 0
+                for k in range(0, len(l_ready_tasks)):
+                    if (l_ready_tasks[k].q > tmp_max_q):
+                        tmp_max_q = l_ready_tasks[k].q
+                        it = k
+
+                current_task = l_ready_tasks[it]
+                del l_ready_tasks[it]
+                new_task = current_task
+                self.t += current_task.p
+                self.c_max = max(self.c_max, self.t + current_task.q)
+        return self.c_max
+
+
 
     def sort(self):
-        tmp_task = task.Task()
         n = self.n
         while(n):
             n -= 1
