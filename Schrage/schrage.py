@@ -12,6 +12,9 @@ class Schrage:
         self.sequence = list()
         self.n = 0
 
+    def clear(self):
+        self.__init__()
+
     def schrage_s(self): #standard shrage
         self.sort()
         t = self.sequence[0].r
@@ -56,16 +59,20 @@ class Schrage:
         self.c_max = 0
         l_ready_tasks = list()
         l_not_ready_tasks = list(self.sequence)
-        t = 0 #time
-        t = self.sequence[0].r #i would like to remove it
+        #t = 0 #time
+        #t = self.sequence[0].r #i would like to remove it
+        idx = Schrage.get_idx_of_min_task(l_not_ready_tasks, 'r')
+        t = l_not_ready_tasks[idx].r
         new_task = task.Task(0,0,0,1000000000)
         current_task = task.Task()
 
         while(len(l_not_ready_tasks) or len(l_ready_tasks)):
-            while(len(l_not_ready_tasks) != 0 and l_not_ready_tasks[0].r <= t):
-                current_task = l_not_ready_tasks[0]
+            while(len(l_not_ready_tasks) != 0 and \
+                    l_not_ready_tasks[Schrage.get_idx_of_min_task(l_not_ready_tasks, 'r')].r <= t):
+                idx = Schrage.get_idx_of_min_task(l_not_ready_tasks, 'r')
+                current_task = copy.deepcopy(l_not_ready_tasks[idx])
                 l_ready_tasks.append(current_task)
-                del l_not_ready_tasks[0]
+                del l_not_ready_tasks[idx]
                 if (current_task.q > new_task.q):
                     new_task.p  = t - current_task.r
                     t = current_task.r
@@ -73,23 +80,58 @@ class Schrage:
                         l_ready_tasks.append(current_task)
 
             if len(l_ready_tasks) == 0:
-                t = l_not_ready_tasks[0].r
+                idx = Schrage.get_idx_of_min_task(l_not_ready_tasks, 'r')
+                t = l_not_ready_tasks[idx].r
             else:
-                tmp_max_q = 0
-                it = 0
-                for k in range(0, len(l_ready_tasks)):
-                    if (l_ready_tasks[k].q > tmp_max_q):
-                        tmp_max_q = l_ready_tasks[k].q
-                        it = k
-
-                current_task = l_ready_tasks[it]
-                del l_ready_tasks[it]
-                new_task = current_task
+                idx = Schrage.get_idx_of_max_task(l_ready_tasks, 'q')
+                current_task = copy.deepcopy(l_ready_tasks[idx])
+                del l_ready_tasks[idx]
+                new_task = copy.deepcopy(current_task)
                 t += current_task.p
                 self.c_max = max(self.c_max, t + current_task.q)
         return self.c_max
 
+    @staticmethod
+    def get_idx_of_min_task(list_of_tasks, parameter):
+        assert isinstance(list_of_tasks, list), "list_of_tasks must be list"
+        min_idx = None
+        for i in range(0,len(list_of_tasks)):
+            if parameter == 'r':
+                if min_idx == None or\
+                        list_of_tasks[i].r < list_of_tasks[min_idx].r:
+                    min_idx = i
+            elif parameter == 'p':
+                if min_idx == None or\
+                        list_of_tasks[i].p < list_of_tasks[min_idx].p:
+                    min_idx = i
+            elif parameter == 'q':
+                if min_idx == None or\
+                        list_of_tasks[i].q < list_of_tasks[min_idx].q:
+                    min_idx = i
+            else:
+                return None
+        return min_idx
 
+    @staticmethod
+    def get_idx_of_max_task(list_of_tasks, parameter):
+        assert isinstance(list_of_tasks, list), "list_of_tasks must be list"
+        max_idx = None
+        for i in range(0,len(list_of_tasks)):
+            if parameter == 'r':
+                if max_idx == None or\
+                        list_of_tasks[i].r > list_of_tasks[max_idx].r:
+                    max_idx = i
+            elif parameter == 'p':
+                if max_idx == None or\
+                        list_of_tasks[i].p > list_of_tasks[max_idx].p:
+                    max_idx = i
+            elif parameter == 'q':
+                if max_idx == None or\
+                        list_of_tasks[i].q > list_of_tasks[max_idx].q:
+                    max_idx = i
+            else:
+                return None
+        return max_idx
 
     def sort(self):
         n = self.n
