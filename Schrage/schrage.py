@@ -9,14 +9,12 @@ class Schrage:
         self.c_max = 0
         self.t = 0 #time
         self.new_task = task.Task()
-        self.l_not_ready_tasks = list()
-        self.l_ready_tasks = list()
         self.sequence = list()
         self.n = 0
 
     def schrage_s(self): #standard shrage
         self.sort()
-        self.t = self.sequence[0].r
+        t = self.sequence[0].r
         self.c_max = 0
         i = 0
         l_ready_tasks = list()
@@ -24,12 +22,12 @@ class Schrage:
 
         while(len(l_not_ready_tasks) or len(l_ready_tasks)):
             while(len(l_not_ready_tasks) and \
-                    l_not_ready_tasks[0].r <= self.t):
+                    l_not_ready_tasks[0].r <= t):
                 tmp_task = l_not_ready_tasks[0]
                 l_ready_tasks.append(tmp_task)
                 del l_not_ready_tasks[0]
             if len(l_ready_tasks) == 0:
-                self.t = l_not_ready_tasks[0].r
+                t = l_not_ready_tasks[0].r
             else:
                 tmp_max_q = 0
                 it = 0
@@ -41,9 +39,9 @@ class Schrage:
                 tmp_task = l_ready_tasks[it]
                 self.sequence[i] = tmp_task
                 del l_ready_tasks[it]
-                self.t += self.sequence[i].p
+                t += self.sequence[i].p
 
-                self.c_max = max(self.c_max, self.t + self.sequence[i].q);
+                self.c_max = max(self.c_max, t + self.sequence[i].q);
 
                 i += 1
 
@@ -57,25 +55,25 @@ class Schrage:
         self.sort()
         self.c_max = 0
         l_ready_tasks = list()
-        l_not_ready_tasks = copy.deepcopy(self.sequence)
-        self.t = 0 #time
-        new_task = task.Task()
+        l_not_ready_tasks = list(self.sequence)
+        t = 0 #time
+        t = self.sequence[0].r #i would like to remove it
+        new_task = task.Task(0,0,0,1000000000)
         current_task = task.Task()
 
         while(len(l_not_ready_tasks) or len(l_ready_tasks)):
-            while(len(l_not_ready_tasks) and \
-                    l_not_ready_tasks[0].r <= self.t):
+            while(len(l_not_ready_tasks) != 0 and l_not_ready_tasks[0].r <= t):
                 current_task = l_not_ready_tasks[0]
                 l_ready_tasks.append(current_task)
                 del l_not_ready_tasks[0]
                 if (current_task.q > new_task.q):
-                    new_task.p  = self.t - current_task.r
-                    self.t = current_task.r
+                    new_task.p  = t - current_task.r
+                    t = current_task.r
                     if new_task.p > 0:
                         l_ready_tasks.append(current_task)
 
             if len(l_ready_tasks) == 0:
-                self.t = l_not_ready_tasks[0].r
+                t = l_not_ready_tasks[0].r
             else:
                 tmp_max_q = 0
                 it = 0
@@ -87,8 +85,8 @@ class Schrage:
                 current_task = l_ready_tasks[it]
                 del l_ready_tasks[it]
                 new_task = current_task
-                self.t += current_task.p
-                self.c_max = max(self.c_max, self.t + current_task.q)
+                t += current_task.p
+                self.c_max = max(self.c_max, t + current_task.q)
         return self.c_max
 
 
