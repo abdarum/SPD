@@ -77,7 +77,7 @@ class Schrage:
                     new_task.p  = t - current_task.r
                     t = current_task.r
                     if new_task.p > 0:
-                        l_ready_tasks.append(current_task)
+                        l_ready_tasks.append(new_task)
 
             if len(l_ready_tasks) == 0:
                 idx = Schrage.get_idx_of_min_task(l_not_ready_tasks, 'r')
